@@ -5,7 +5,7 @@
     "Denis Mamrak <mamrak@gmail.com>"
   ],
   "description": "",
-  "main": "",
+  "main": "index.html",
   "moduleType": [
     "amd"
   ],
@@ -18,11 +18,6 @@
     "test",
     "tests"
   ],
-  "devDependencies": {
-    "backbone": "~1.2.3",
-    "requirejs": "~2.1.22",
-    "jquery": "~2.1.4"
-  },
   "dependencies": {
     "bootstrap": "~3.3.6",
     "jquery": "~2.1.4",

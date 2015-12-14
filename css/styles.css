@@ -3,12 +3,24 @@
 
 #file_manager {
 	width: 1024px;
-	margin: 20px auto 0 auto;
+	margin: 20px auto;
 }
 
 #file_manager .actions .active {
 	display: none;
 }
+
+#file_manager .list_container {
+	height: 400px;
+	margin-bottom: 20px;
+	overflow: auto;
+	border: 1px solid #CCC;
+}
+
+#file_manager .table {
+	margin-bottom: 0;
+}
+
 
 /* File list */
 

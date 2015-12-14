@@ -10,10 +10,11 @@ window.Filemanager = {
 Filemanager.Models.File = Backbone.Model.extend({
 	defaults: function(){
 		return {
-			name: '',
-			type: '',
-			text: '',
-			size: 0
+			marked: false,
+			name  : '',
+			type  : '',
+			text  : '',
+			size  : 0
 		};
 	},
 
@@ -33,6 +34,17 @@ var FilesCollection = Backbone.Collection.extend({
 	initialize: function(){
 		this.key    = 'name';
 		this.order  = 'asc';
+		var storage = localStorage['Files'];
+		if(storage == undefined){
+			var data = {
+				name: 'readme',
+				type: 'txt',
+				text: 'This is a file, created on first app run.'
+			};
+			var file = new Filemanager.Models.File(data);
+			this.add(file);
+			file.update(data);
+		}
 	},
 
 	comparator: function(a, b){
@@ -50,7 +62,6 @@ var FilesCollection = Backbone.Collection.extend({
 
 Filemanager.Collections.Files = new FilesCollection();
 Filemanager.Collections.Proxy = new Backbone.Obscura(Filemanager.Collections.Files);
-
 
 
 
@@ -103,7 +114,6 @@ var ListView = Backbone.View.extend({
 
 	render: function(){
 		$(this.el).find('tbody').empty();
-		//var result = Filemanager.Collections.Files.search();
 
 		var _this = this;
 		Filemanager.Collections.Proxy.each(function(item){
@@ -150,9 +160,10 @@ var ActionsView = Backbone.View.extend({
 	el: '.actions',
 
 	events: {
-		'click'        : 'click',
-		'click .edit'  : 'edit',
-		'click .delete': 'delete',
+		'click'          : 'click',
+		'click .bookmark': 'bookmark',
+		'click .edit'    : 'edit',
+		'click .delete'  : 'delete',
 	},
 
 	initialize: function(){
@@ -178,8 +189,9 @@ var ActionsView = Backbone.View.extend({
 		$(this.el).find('.file_name').text('');
 	},
 
-	bookmark: function(){
-		this.selected.set({marked: true});
+	bookmark: function(e){
+		var marked = this.selected.get('marked');
+		this.selected.save({marked: !marked});
 		return false;
 	},
 
@@ -292,15 +304,19 @@ var AppView = Backbone.View.extend({
 	el: 'html',
 
 	events: {
-		'click'          : 'click',
-		'click  .btn.add': 'add',
-		'change .filter' : 'filter',
+		'click'         : 'click',
+		'click .btn.add': 'add',
+
+		'change .show.all'      : 'showAll',
+		'change .show.bookmarks': 'showBookmarks',
+		'submit .filter'        : 'filter',
 	},
 
 	initialize: function(){
 		this.listenTo(Filemanager.Collections.Files, 'select', this.select);
 		this.listenTo(Filemanager.Collections.Files, 'deselect', this.deselect);
 		Filemanager.Collections.Files.fetch();
+		Filemanager.Collections.Files.sort();
 	},
 	
 	click: function(){
@@ -325,15 +341,38 @@ var AppView = Backbone.View.extend({
 		return false;
 	},
 
-	filter: function(e){
-		var value = e.target.value;
-		Filemanager.Collections.Proxy.filterBy('search', function(model){
-			var name  = model.get('name') + '.' + model.get('type');
-			var regex = new RegExp(value, 'gi');
-			var match = regex.test(name);
-			return match;
+	showAll: function(e){
+		Filemanager.Collections.Proxy.removeFilter('bookmarks');
+		Filemanager.Collections.Files.sort();
+	},
+
+	showBookmarks: function(e){
+		Filemanager.Collections.Proxy.filterBy('bookmarks', function(model){
+			return model.get('marked');
 		});
 		Filemanager.Collections.Files.sort();
+	},
+
+	filter: function(e){
+		var value    = $(e.target).find('input[type="text"]').val();
+		// Checking if there's at least one wildcard symbol in the search string
+		var wildcard = value.match(/\*/g);
+		var escaped  = value
+			// Escaping all special characters except asterisk
+			.replace(/[-\/\\^$+?.()|[\]{}]/g, '\\$&')
+			// Replacing asterisks with "match any characters" regexp
+			.replace(/\*/g, '.*');
+		if(wildcard){
+			// If there's at least one wildcard, adding "starts with" and "ends with" to the search string
+			escaped = '^' + escaped + '$';
+		}
+		Filemanager.Collections.Proxy.filterBy('search', function(model){
+			var regex = new RegExp(escaped, 'gi');
+			var name  = model.get('name') + '.' + model.get('type');
+			return regex.test(name);
+		});
+		Filemanager.Collections.Files.sort();
+		return false;
 	},
 
 });

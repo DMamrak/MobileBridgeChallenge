@@ -15,36 +15,50 @@
 	<!-- File manager -->
 	<div id="file_manager">
 
-		<!-- Filter -->
-		<div class="input-group">
-			<input type="text" class="form-control filter">
-			<span class="input-group-btn">
-				<input type="button" class="btn btn-default" value="Filter" />
-			</span>
-		</div>
-		<!-- /Filter -->
+		<!-- Navbar -->
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<span class="navbar-brand">
+						File Manager
+					</span>
+				</div>
+
+				<!-- Search form -->
+				<form class="navbar-form pull-right filter" role="search">
+					<div class="form-group">
+						<input type="text" class="form-control" placeholder="Search">
+					</div>
+					<input type="submit" value="Search" class="btn btn-primary" />
+				</form>
+				<!-- /Search form -->
+			</div>
+		</nav>
+		<!-- /Navbar -->
 
 		<div class="row">
 			<!-- Left column -->
 			<div class="col-md-9">
 				<!-- File list -->
-				<table class="table table-striped table-hover file_list" id="file_list">
-					<thead>
-						<tr>
-							<th>
-								<a href="" class="order asc" data-value="name">File name</a>
-							</th>
-							<th>
-								<a href="" class="order" data-value="type">File type</a>
-							</th>
-							<th>
-								<a href="" class="order" data-value="size">Size</a>
-							</th>
-						</tr>
-					</thead>
-
-					<tbody></tbody>
-				</table>
+				<div class="list_container">
+					<table class="table table-striped table-hover file_list" id="file_list">
+						<thead>
+							<tr>
+								<th></th>
+								<th>
+									<a href="" class="order asc" data-value="name">File name</a>
+								</th>
+								<th>
+									<a href="" class="order" data-value="type">File type</a>
+								</th>
+								<th>
+									<a href="" class="order" data-value="size">Size</a>
+								</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
 				<!-- /File list -->
 			</div>
 			<!-- /Left column -->
@@ -66,7 +80,7 @@
 							<li>
 								<span class="glyphicon glyphicon-bookmark"></span>
 								<a href="" class="bookmark">
-									Bookmark
+									Toggle bookmark
 								</a>
 							</li>
 							<li>
@@ -90,7 +104,23 @@
 			<!-- /Right column -->
 		</div>
 
-		<input type="button" value="Create new" class="btn btn-primary add" />
+		<!-- File manager controls -->
+		<div class="row">
+		<div class="col-md-9 controls">
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-primary active">
+					<input type="radio" name="options" id="option1" autocomplete="off" class="show all" checked>
+					View all files
+				</label>
+				<label class="btn btn-primary">
+					<input type="radio" name="options" id="option2" class="show bookmarks" autocomplete="off">
+					View bookmarks
+				</label>
+			</div>
+			<input type="button" value="Create new file" class="btn btn-primary pull-right add" />
+		</div>
+		</div>
+		<!-- /File manager controls -->
 
 		<!-- Modal editor -->
 		<div class="modal fade" id="file_editor" tabindex="-1" role="dialog" aria-labelledby="window_title">
@@ -101,7 +131,7 @@
 						<button type="button" class="close cancel" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="window_title">Add new file:</h4>
+						<h4 class="modal-title" id="window_title">Add / edit file:</h4>
 					</div>
 
 					<div class="modal-body">
@@ -151,6 +181,7 @@
 			doc: 'Microsoft Word',
 		};
 		%>
+		<td> <span class="glyphicon <%= marked ? 'glyphicon-star' : 'glyphicon-star-empty' %>"></span></td>
 		<td><%= name %>.<%= type %></td>
 		<td><%= map[type] %></td>
 		<td><%= size %></td>
@@ -163,6 +194,7 @@
 	<script src="bower_components/backbone/backbone-min.js"></script>
 	<script src="bower_components/backbone.obscura/backbone.obscura.js"></script>
 	<script src="bower_components/backbone.localStorage/backbone.localStorage.js"></script>
+	<script src="bower_components/requirejs/require.js"></script>
 
 	<!--
 	<script src="js/models/todo.js"></script>
