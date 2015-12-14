@@ -1,10 +1,10 @@
-define(['FileModel'], function(FileModel){
+define(['FileModel', 'text!FileTpl'], function(FileModel, FileTpl){
 	var FileView = Backbone.View.extend({
 		tagName: 'tr',
 
 		model: FileModel,
 
-		template: _.template($('#row-tpl').html()),
+		template: _.template(FileTpl),
 
 		events: {
 			'click': 'select'

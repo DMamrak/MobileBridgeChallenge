@@ -25,6 +25,7 @@
     "requirejs": "~2.1.22",
     "backbone.localStorage": "~1.1.16",
     "bootstrap-validator": "~0.9.0",
-    "backbone.obscura": "~1.0.1"
+    "backbone.obscura": "~1.0.1",
+    "text": "requirejs-text#~2.0.14"
   }
 }

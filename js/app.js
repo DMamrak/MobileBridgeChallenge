@@ -1,17 +1,21 @@
 requirejs.config({
-	baseUrl: 'js',
+	baseUrl: '',
 	paths: {
+		// Plugins
+		text: 'bower_components/text/text',
 		// Models
-		FileModel: 'models/file',
+		FileModel: 'js/models/file',
 		// Collections
-		Files: 'collections/files',
-		Proxy: 'collections/proxy',
+		Files: 'js/collections/files',
+		Proxy: 'js/collections/proxy',
 		//Views
-		FileView   : 'views/file',
-		ListView   : 'views/list',
-		ActionsView: 'views/actions',
-		EditorView : 'views/editor',
-		AppView    : 'views/app'
+		FileView   : 'js/views/file',
+		ListView   : 'js/views/list',
+		ActionsView: 'js/views/actions',
+		EditorView : 'js/views/editor',
+		AppView    : 'js/views/app',
+		// Templates
+		FileTpl: 'tpl/file.tpl',
 	}
 });
 
