@@ -1,0 +1,23 @@
+
+/* Common */
+
+#file_manager {
+	width: 1024px;
+	margin: 20px auto 0 auto;
+}
+
+#file_manager .actions .active {
+	display: none;
+}
+
+/* File list */
+
+.file_list .order.asc:after {
+	content: "▲";
+	display: inline-block;
+}
+
+.file_list .order.desc:after {
+	content: "▼";
+	display: inline-block;
+}
