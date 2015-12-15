@@ -2,7 +2,7 @@ requirejs.config({
 	baseUrl: '',
 	paths: {
 		// Plugins
-		text: 'bower_components/text/text',
+		text: 'js/lib/text',
 		// Models
 		FileModel: 'js/models/file',
 		// Collections
